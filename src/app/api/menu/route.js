@@ -11,11 +11,13 @@ function createSlug(text) {
         .replace(/(^-|-$)/g, '');
 }
 
+export const dynamic = 'force-dynamic'; // Prevent Vercel from caching the API route at build time
+
 export async function GET() {
     try {
         const serviceAccountAuth = new JWT({
             email: process.env.GOOGLE_CLIENT_EMAIL,
-            key: process.env.GOOGLE_PRIVATE_KEY,
+            key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
             scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
         });
 
@@ -71,9 +73,9 @@ export async function GET() {
 
         return Response.json(result);
     } catch (error) {
-        console.error(error);
+        console.error("API Error details:", error.message);
         return Response.json(
-            { error: 'Error cargando menú desde Google Sheets' },
+            { error: 'Error cargando menú desde Google Sheets', details: error.message },
             { status: 500 }
         );
     }
