@@ -1,59 +1,92 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import Brands from '../components/Brands';
 import PaymentMethods from '../components/PaymentMethods';
 import ProductCard from '../components/ProductCard';
-import { menuData } from '../data/menu';
 import styles from './page.module.css';
 
-// Mapping categories to an emoji to use as a delicate background illustration
 const categoryIcons = {
-  "pizzas": "🍕",
-  "empanadas": "🥟",
-  "entradas": "🍟",
-  "papas": "🥔",
-  "tablas": "🧀",
-  "bruschettas": "🥖",
-  "platos-principales": "🥩",
-  "wok": "🥡",
-  "postres": "🍰",
-  "ensaladas": "🥗",
-  "pastas": "🍝",
-  "salsas": "🥫",
-  "menu-infantil": "🧒",
-  "hamburguesas": "🍔",
-  "bebidas": "🥤",
-  "tragos": "🍹",
-  "cafeteria": "☕",
-  "sin-tacc": "🌾",
-  "bodega": "🍷"
+  pizzas: '🍕',
+  empanadas: '🥟',
+  entradas: '🍟',
+  papas: '🥔',
+  tablas: '🧀',
+  bruschettas: '🥖',
+  'platos-principales': '🥩',
+  wok: '🥡',
+  postres: '🍰',
+  ensaladas: '🥗',
+  pastas: '🍝',
+  salsas: '🥫',
+  'menu-infantil': '🧒',
+  hamburguesas: '🍔',
+  bebidas: '🥤',
+  tragos: '🍹',
+  cafeteria: '☕',
+  'sin-tacc': '🌾',
+  bodega: '🍷'
 };
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [menuData, setMenuData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Filter products based on search query
-  const filteredData = menuData.map(category => ({
-    ...category,
-    items: category.items.filter(item => 
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
-    )
-  })).filter(category => category.items.length > 0);
+  useEffect(() => {
+    async function loadMenu() {
+      try {
+        const response = await fetch('/api/menu');
+        const data = await response.json();
+
+        if (Array.isArray(data)) {
+          setMenuData(data);
+        } else {
+          console.error('La API no devolvió una lista:', data);
+          setMenuData([]);
+        }
+      } catch (error) {
+        console.error('Error cargando el menú:', error);
+        setMenuData([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadMenu();
+  }, []);
+
+  const filteredData = menuData
+    .map(category => ({
+      ...category,
+      items: category.items.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      )
+    }))
+    .filter(category => category.items.length > 0);
+
+  if (loading) {
+    return (
+      <main className={styles.main}>
+        <Header />
+        <div className={styles.content}>
+          <p>Cargando menú...</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className={styles.main}>
       <Header />
-      
-      {/* Floating WhatsApp Delivery Button */}
-      <a 
-        href="https://wa.me/543442667671?text=Hola,%20me%20gustar%C3%ADa%20hacer%20un%20pedido%20para%20delivery" 
-        target="_blank" 
+
+      <a
+        href="https://wa.me/543442667671?text=Hola,%20me%20gustar%C3%ADa%20hacer%20un%20pedido%20para%20delivery"
+        target="_blank"
         rel="noopener noreferrer"
         className={styles.whatsappButton}
         aria-label="Pedir por WhatsApp"
@@ -67,7 +100,6 @@ export default function Home() {
 
       <div className={styles.content}>
         {searchQuery ? (
-          // If searching, show the results directly
           filteredData.length === 0 ? (
             <div className={styles.noResults}>
               No se encontraron productos para "{searchQuery}"
@@ -75,7 +107,10 @@ export default function Home() {
           ) : (
             filteredData.map(category => (
               <div key={category.id} style={{ marginBottom: '2rem' }}>
-                <h3 style={{ marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>{category.name}</h3>
+                <h3 style={{ marginBottom: '1rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+                  {category.name}
+                </h3>
+
                 {category.items.map(item => (
                   <ProductCard key={item.id} item={item} />
                 ))}
@@ -83,25 +118,56 @@ export default function Home() {
             ))
           )
         ) : (
-          // If not searching, show the category grid
           <>
             <Brands />
+
             <div className={styles.categoriesGrid}>
-              {menuData.map((category) => (
-                <Link 
-                  href={`/category/${category.id}`} 
-                  key={category.id} 
-                  className={styles.categoryCard}
-                  data-icon={categoryIcons[category.id] || "🍽️"}
-                >
-                  <h2 className={styles.categoryName}>{category.name}</h2>
-                </Link>
-              ))}
+              {menuData.map((category, index) => {
+                const categoryImages = {
+                  "pizzas": "cat_pizzas_1777948745116.png",
+                  "empanadas": "cat_empanadas_1777948758530.png",
+                  "entradas": "cat_entradas_1777948773334.png",
+                  "papas": "cat_papas_1777948787796.png",
+                  "tablas": "cat_tablas_1777948801638.png",
+                  "bruschettas": "cat_bruschettas_1777948816039.png",
+                  "platos-principales": "cat_platos_principales_1777948864878.png",
+                  "wok": "cat_wok_1777948880648.png",
+                  "postres": "cat_postres_1777948894562.png",
+                  "ensaladas": "cat_ensaladas_1777948908523.png",
+                  "pastas": "cat_pastas_1777948921839.png",
+                  "salsas": "cat_salsas_1777948935935.png",
+                  "menu-infantil": "cat_menu_infantil_1777949008511.png",
+                  "hamburguesas": "cat_hamburguesas_1777949023178.png",
+                  "bebidas": "cat_bebidas_1777949036877.png",
+                  "tragos": "cat_tragos_1777949052420.png"
+                };
+                return (
+                  <Link 
+                    href={`/category/${category.id}`} 
+                    key={category.id} 
+                    className={styles.categoryCard}
+                    data-icon={!categoryImages[category.id] ? (categoryIcons[category.id] || "🍽️") : ""}
+                    style={{ 
+                      animationDelay: `${index * 0.05}s`,
+                      backgroundImage: categoryImages[category.id] 
+                        ? `linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%), url('/images/${categoryImages[category.id]}')`
+                        : undefined,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  >
+                    <h2 className={styles.categoryName}>{category.name}</h2>
+                  </Link>
+                );
+              })}
             </div>
 
-            {/* Store Image */}
             <div className={styles.storeImageContainer}>
-              <img src="/images/media__1777945987919.jpg" alt="Bartolo Bar Exterior" className={styles.storeImage} />
+              <img
+                src="/images/media__1777945987919.jpg"
+                alt="Bartolo Bar Exterior"
+                className={styles.storeImage}
+              />
             </div>
           </>
         )}
@@ -109,16 +175,30 @@ export default function Home() {
 
       <PaymentMethods />
 
-      {/* Footer */}
       <footer className={styles.footer}>
-        <div className={styles.address}>
-          <svg className={styles.addressIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-            <circle cx="12" cy="10" r="3"></circle>
-          </svg>
-          San Martín 745
+        <div>
+          <div className={styles.address}>
+            <svg className={styles.addressIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            San Martín 745
+          </div>
+
+          <p>Concepción del Uruguay</p>
         </div>
-        <p>Concepción del Uruguay</p>
+
+        <div className={styles.creatorCredits}>
+          Creado y desarrollado por{' '}
+          <a
+            href="https://instagram.com/rafaelasanna_"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.creatorLink}
+          >
+            Rafaela Sanna
+          </a>
+        </div>
       </footer>
     </main>
   );
