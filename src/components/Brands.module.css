@@ -36,6 +36,13 @@
   border-radius: 4px;
 }
 
+.brandImage {
+  height: 40px;
+  width: auto;
+  margin-bottom: 5px;
+  border-radius: 8px; /* Optional, adds a nice touch for the generated images */
+}
+
 .corona {
   font-family: var(--font-serif);
   font-size: 1.8rem;
@@ -45,11 +52,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.corona::before {
-  content: '👑';
-  font-size: 1.2rem;
-  margin-bottom: -5px;
 }
 
 .patagonia {
@@ -62,11 +64,6 @@
   align-items: center;
   text-transform: uppercase;
   letter-spacing: 2px;
-}
-.patagonia::before {
-  content: '🏔️';
-  font-size: 1.5rem;
-  margin-bottom: -5px;
 }
 
 .pepsi {

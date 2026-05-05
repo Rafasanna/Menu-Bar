@@ -8,10 +8,12 @@ export default function Brands() {
       </div>
       
       <div className={`${styles.brand} ${styles.corona}`}>
+        <img src="/images/corona_logo.png" alt="Corona logo" className={styles.brandImage} />
         Corona
       </div>
 
       <div className={`${styles.brand} ${styles.patagonia}`}>
+        <img src="/images/patagonia_logo.png" alt="Patagonia logo" className={styles.brandImage} />
         Patagonia
       </div>
 

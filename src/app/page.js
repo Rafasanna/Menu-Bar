@@ -13,7 +13,7 @@ const categoryIcons = {
   pizzas: '🍕',
   empanadas: '🥟',
   entradas: '🍟',
-  papas: '🥔',
+  'nuestras-papas': '🥔',
   tablas: '🧀',
   bruschettas: '🥖',
   'platos-principales': '🥩',
@@ -27,8 +27,8 @@ const categoryIcons = {
   bebidas: '🥤',
   tragos: '🍹',
   cafeteria: '☕',
-  'sin-tacc': '🌾',
-  bodega: '🍷'
+  'productos-sin-tacc': '🌾',
+  'la-bodega-del-general': '🍷'
 };
 
 export default function Home() {
@@ -127,7 +127,7 @@ export default function Home() {
                   "pizzas": "cat_pizzas_1777948745116.png",
                   "empanadas": "cat_empanadas_1777948758530.png",
                   "entradas": "cat_entradas_1777948773334.png",
-                  "papas": "cat_papas_1777948787796.png",
+                  "nuestras-papas": "cat_papas_1777948787796.png",
                   "tablas": "cat_tablas_1777948801638.png",
                   "bruschettas": "cat_bruschettas_1777948816039.png",
                   "platos-principales": "cat_platos_principales_1777948864878.png",
@@ -139,7 +139,10 @@ export default function Home() {
                   "menu-infantil": "cat_menu_infantil_1777949008511.png",
                   "hamburguesas": "cat_hamburguesas_1777949023178.png",
                   "bebidas": "cat_bebidas_1777949036877.png",
-                  "tragos": "cat_tragos_1777949052420.png"
+                  "tragos": "cat_tragos_1777949052420.png",
+                  "cafeteria": "cat_cafeteria_1777987847830.png",
+                  "productos-sin-tacc": "cat_sin_tacc_1777987861994.png",
+                  "la-bodega-del-general": "cat_bodega_1777987876493.png"
                 };
                 return (
                   <Link 
