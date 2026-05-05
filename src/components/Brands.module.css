@@ -25,40 +25,28 @@
   filter: grayscale(100%) brightness(150%); /* Grayscale on hover */
 }
 
-.stella {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #e32636;
-  text-transform: uppercase;
-  border: 2px solid #e32636;
-  padding: 0.2rem 0.5rem;
+.stella .brandImage {
+  height: 45px;
   border-radius: 4px;
 }
 
 .brandImage {
   height: 40px;
   width: auto;
-  margin-bottom: 5px;
-  border-radius: 8px; /* Optional, adds a nice touch for the generated images */
+  border-radius: 8px;
 }
 
-.corona {
-  font-family: var(--font-serif);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #0082c3; /* Brighter blue for visibility */
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.corona .brandImage {
+  height: 35px;
+  border-radius: 0;
+  filter: brightness(0) invert(1); /* White for dark mode */
 }
 
 .patagonia {
   font-family: var(--font-main);
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #1a4a38;
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,20 +54,11 @@
   letter-spacing: 2px;
 }
 
-.pepsi {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-main);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #004b93;
-  text-transform: lowercase;
-  font-style: italic;
+.patagonia .brandImage {
+  margin-bottom: 5px;
 }
-.pepsiCircle {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #e32636 40%, white 40%, white 60%, #004b93 60%);
+
+.pepsi .brandImage {
+  height: 40px;
+  border-radius: 0;
 }
