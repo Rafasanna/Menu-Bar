@@ -1,6 +1,9 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { JWT } from 'google-auth-library';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 function createSlug(text) {
     return String(text || '')
         .toLowerCase()
@@ -11,13 +14,15 @@ function createSlug(text) {
         .replace(/(^-|-$)/g, '');
 }
 
-export const dynamic = 'force-dynamic'; // Prevent Vercel from caching the API route at build time
-
 export async function GET() {
     try {
+        const credentials = JSON.parse(
+            Buffer.from(process.env.GOOGLE_PRIVATE_KEY_BASE64, 'base64').toString('utf-8')
+        );
+
         const serviceAccountAuth = new JWT({
-            email: process.env.GOOGLE_CLIENT_EMAIL,
-            key: (process.env.GOOGLE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+            email: credentials.client_email,
+            key: credentials.private_key,
             scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
         });
 
@@ -73,9 +78,13 @@ export async function GET() {
 
         return Response.json(result);
     } catch (error) {
-        console.error("API Error details:", error.message);
+        console.error('API Error details:', error);
+
         return Response.json(
-            { error: 'Error cargando menú desde Google Sheets', details: error.message },
+            {
+                error: 'Error cargando menú desde Google Sheets',
+                details: error.message,
+            },
             { status: 500 }
         );
     }
