@@ -1,142 +1,144 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
-}
-
 .main {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
+}
+
+.content {
   flex: 1;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
+  padding: 1rem;
 }
 
-.intro {
+/* Make WhatsApp button floating */
+.whatsappButton {
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background-color: #25D366; /* WhatsApp green */
+  color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: transform var(--transition-speed) ease;
+}
+
+.whatsappButton:hover {
+  transform: scale(1.1);
+}
+
+.whatsappIcon {
+  width: 35px;
+  height: 35px;
+  fill: currentColor;
+}
+
+.whatsappText {
+  display: none; /* Hide the text for the floating icon */
+}
+
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.categoryCard {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem 1rem;
+  text-align: center;
+  transition: all var(--transition-speed) ease;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
-}
-
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
-}
-
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
-
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.ctas a {
-  display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
-  cursor: pointer;
-  width: fit-content;
+  aspect-ratio: 1; /* Make them square-ish */
+  position: relative;
+  overflow: hidden;
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--text-primary);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.categoryCard::after {
+  content: attr(data-icon);
+  position: absolute;
+  font-size: 8rem;
+  opacity: 0.05;
+  right: -10%;
+  bottom: -20%;
+  pointer-events: none;
+  line-height: 1;
+}
+
+.categoryName {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  position: relative;
+  z-index: 2; /* keep text above the illustration */
+}
+
+.noResults {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Store Image */
+.storeImageContainer {
+  padding: 1rem;
+  margin: 2rem auto;
+  max-width: 350px;
+  text-align: center;
+}
+
+.storeImage {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  transition: transform var(--transition-speed) ease;
+}
+
+.storeImage:hover {
+  transform: scale(1.02);
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 3rem 1rem 4rem 1rem; /* Extra bottom padding to avoid WhatsApp button overlap */
+  color: var(--text-secondary);
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+.address {
+  font-size: 1.1rem;
   font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--button-secondary-border);
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-}
-
-@media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
-  }
-
-  .intro {
-    gap: 16px;
-  }
-
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
-  }
-
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
-  }
+.addressIcon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
 }

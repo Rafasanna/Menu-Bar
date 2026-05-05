@@ -1,0 +1,44 @@
+.navContainer {
+  position: sticky;
+  top: 96px; /* Below the header approximately */
+  z-index: 99;
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.scrollArea {
+  display: flex;
+  overflow-x: auto;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollArea::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.categoryBtn {
+  white-space: nowrap;
+  padding: 0.5rem 1.2rem;
+  border-radius: 20px;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all var(--transition-speed) ease;
+}
+
+.categoryBtn:hover {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--accent-color);
+}
+
+.categoryBtn.active {
+  background-color: var(--accent-color);
+  color: var(--bg-primary);
+  font-weight: 600;
+}

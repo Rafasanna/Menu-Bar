@@ -1,0 +1,63 @@
+.container {
+  padding: 2rem 1rem;
+  background-color: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.methodsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.methodItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  width: calc(50% - 0.5rem);
+  max-width: 150px;
+  transition: all var(--transition-speed) ease;
+}
+
+.methodItem:hover {
+  border-color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.iconWrapper {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.iconWrapper svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.methodName {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
