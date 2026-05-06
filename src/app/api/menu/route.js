@@ -16,13 +16,9 @@ function createSlug(text) {
 
 export async function GET() {
     try {
-        const credentials = JSON.parse(
-            Buffer.from(process.env.GOOGLE_PRIVATE_KEY_BASE64, 'base64').toString('utf-8')
-        );
-
         const serviceAccountAuth = new JWT({
-            email: credentials.client_email,
-            key: credentials.private_key,
+            email: process.env.GOOGLE_CLIENT_EMAIL,
+            key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
             scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
         });
 

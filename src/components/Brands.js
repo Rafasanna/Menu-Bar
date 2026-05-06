@@ -1,38 +1,12 @@
 import styles from './Brands.module.css';
 
 export default function Brands() {
-  const brands = [
-    {
-      name: 'Stella Artois',
-      logo: '/brands/stella.svg',
-    },
-    {
-      name: 'Corona',
-      logo: '/brands/corona.svg',
-    },
-    {
-      name: 'Patagonia',
-      logo: '/brands/patagonia.svg',
-    },
-    {
-      name: 'Pepsi',
-      logo: '/brands/pepsi.svg',
-    },
-  ];
-
   return (
     <section className={styles.container}>
-      <div className={styles.grid}>
-        {brands.map((brand) => (
-          <div key={brand.name} className={styles.card}>
-            <img
-              src={brand.logo}
-              alt={brand.name}
-              className={styles.logo}
-            />
-          </div>
-        ))}
-      </div>
+      <img src="/brands/stella.svg" alt="Stella Artois" className={styles.logo} />
+      <img src="/brands/patagonia.svg" alt="Patagonia" className={styles.logo} />
+      <img src="/brands/corona.svg" alt="Corona" className={styles.logo} />
+      <img src="/brands/pepsi.svg" alt="Pepsi" className={styles.logo} />
     </section>
   );
 }

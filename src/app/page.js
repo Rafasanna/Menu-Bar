@@ -46,14 +46,18 @@ export default function Home() {
       },
     });
 
-    const data = await response.json();
+   const data = await response.json();
 
-    if (Array.isArray(data)) {
-      setMenuData(data);
-    } else {
-      console.error('La API no devolvió una lista:', data);
-      setMenuData([]);
-    }
+const normalizedData = Array.isArray(data)
+  ? data
+  : Array.isArray(data.data)
+    ? data.data
+    : [];
+
+console.log('MENU DATA:', normalizedData);
+
+setMenuData(normalizedData);
+
   } catch (error) {
     console.error('Error cargando el menú:', error);
     setMenuData([]);
