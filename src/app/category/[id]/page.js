@@ -1,36 +1,65 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
 import ProductCard from '../../../components/ProductCard';
 import styles from './page.module.css';
 
-export const dynamic = 'force-dynamic';
+export default function CategoryPage() {
+  const params = useParams();
+  const { id } = params;
 
-async function getMenuData() {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SITE_URL}/api/menu?t=${Date.now()}`,
-      {
+  const [category, setCategory] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  async function loadCategory() {
+    try {
+      const response = await fetch(`/api/menu?t=${Date.now()}`, {
+        method: 'GET',
         cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
+
+      const menuData = await response.json();
+
+      if (Array.isArray(menuData)) {
+        const foundCategory = menuData.find(c => c.id === id);
+        setCategory(foundCategory || null);
+      } else {
+        setCategory(null);
       }
-    );
-
-    return response.json();
-  } catch (error) {
-    console.error('Error cargando categorías:', error);
-    return [];
+    } catch (error) {
+      console.error('Error cargando categoría:', error);
+      setCategory(null);
+    } finally {
+      setLoading(false);
+    }
   }
-}
 
-export default async function CategoryPage({ params }) {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
+  useEffect(() => {
+    loadCategory();
+  }, [id]);
 
-  const menuData = await getMenuData();
-
-  const category = menuData.find(c => c.id === id);
+  if (loading) {
+    return (
+      <main className={styles.container}>
+        <p>Cargando categoría...</p>
+      </main>
+    );
+  }
 
   if (!category) {
-    notFound();
+    return (
+      <main className={styles.container}>
+        <Link href="/" className={styles.backButton}>
+          ← Volver al menú
+        </Link>
+        <h1>Categoría no encontrada</h1>
+      </main>
+    );
   }
 
   return (
@@ -45,7 +74,7 @@ export default async function CategoryPage({ params }) {
 
       <div className={styles.productsGrid}>
         {category.items.map(item => (
-          <ProductCard key={item.id} product={item} />
+          <ProductCard key={item.id} item={item} />
         ))}
       </div>
     </main>
