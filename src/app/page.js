@@ -186,8 +186,13 @@ useEffect(() => {
         )}
       </div>
 
+      <p className={styles.disclaimer}>
+        * Las imágenes son ilustrativas *
+      </p>
+
       <PaymentMethods />
 
+       
       <footer className={styles.footer}>
         <div>
           <div className={styles.address}>
@@ -213,6 +218,7 @@ useEffect(() => {
           </a>
         </div>
       </footer>
+      
     </main>
   );
 }

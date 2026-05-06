@@ -14,13 +14,32 @@ function createSlug(text) {
         .replace(/(^-|-$)/g, '');
 }
 
-export async function GET() {
-    try {
-        const serviceAccountAuth = new JWT({
-            email: process.env.GOOGLE_CLIENT_EMAIL,
-            key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+function getGoogleAuth() {
+    if (process.env.GOOGLE_PRIVATE_KEY_BASE64) {
+        const credentials = JSON.parse(
+            Buffer.from(
+                process.env.GOOGLE_PRIVATE_KEY_BASE64,
+                'base64'
+            ).toString('utf-8')
+        );
+
+        return new JWT({
+            email: credentials.client_email,
+            key: credentials.private_key,
             scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
         });
+    }
+
+    return new JWT({
+        email: process.env.GOOGLE_CLIENT_EMAIL,
+        key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+    });
+}
+
+export async function GET() {
+    try {
+        const serviceAccountAuth = getGoogleAuth();
 
         const doc = new GoogleSpreadsheet(
             process.env.GOOGLE_SHEET_ID,
