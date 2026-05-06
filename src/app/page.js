@@ -60,14 +60,6 @@ export default function Home() {
 
   async function loadMenu() {
     try {
-      const response = await fetch(`/api/menu?t=${Date.now()}`, {
-        method: 'GET',
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
-      });
-
       const data = await response.json();
 
       if (Array.isArray(data)) {
@@ -84,26 +76,26 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
+ useEffect(() => {
+  loadMenu();
+
+  const interval = setInterval(() => {
     loadMenu();
+  }, 5000);
 
-    const interval = setInterval(() => {
+  const handleVisibilityChange = () => {
+    if (!document.hidden) {
       loadMenu();
-    }, 10000);
+    }
+  };
 
-    const handleVisibilityChange = () => {
-      if (!document.hidden) {
-        loadMenu();
-      }
-    };
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
-    return () => {
-      clearInterval(interval);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-    };
-  }, []);
+  return () => {
+    clearInterval(interval);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+  };
+}, []);
 
   const filteredData = menuData
     .map(category => ({
