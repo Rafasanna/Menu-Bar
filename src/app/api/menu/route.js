@@ -76,7 +76,13 @@ export async function GET() {
             items: category.items.sort((a, b) => a.order - b.order),
         }));
 
-        return Response.json(result);
+        return Response.json(result, {
+            headers: {
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                Pragma: 'no-cache',
+                Expires: '0',
+            },
+        });
     } catch (error) {
         console.error('API Error details:', error);
 

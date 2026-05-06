@@ -31,32 +31,78 @@ const categoryIcons = {
   'la-bodega-del-general': '🍷'
 };
 
+const categoryImages = {
+  pizzas: 'cat_pizzas_1777948745116.png',
+  empanadas: 'cat_empanadas_1777948758530.png',
+  entradas: 'cat_entradas_1777948773334.png',
+  'nuestras-papas': 'cat_papas_1777948787796.png',
+  tablas: 'cat_tablas_1777948801638.png',
+  bruschettas: 'cat_bruschettas_1777948816039.png',
+  'platos-principales': 'cat_platos_principales_1777948864878.png',
+  wok: 'cat_wok_1777948880648.png',
+  postres: 'cat_postres_1777948894562.png',
+  ensaladas: 'cat_ensaladas_1777948908523.png',
+  pastas: 'cat_pastas_1777948921839.png',
+  salsas: 'cat_salsas_1777948935935.png',
+  'menu-infantil': 'cat_menu_infantil_1777949008511.png',
+  hamburguesas: 'cat_hamburguesas_1777949023178.png',
+  bebidas: 'cat_bebidas_1777949036877.png',
+  tragos: 'cat_tragos_1777949052420.png',
+  cafeteria: 'cat_cafeteria_1777987847830.png',
+  'productos-sin-tacc': 'cat_sin_tacc_1777987861994.png',
+  'la-bodega-del-general': 'cat_bodega_1777987876493.png'
+};
+
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [menuData, setMenuData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function loadMenu() {
-      try {
-        const response = await fetch('/api/menu');
-        const data = await response.json();
+  async function loadMenu() {
+    try {
+      const response = await fetch(`/api/menu?t=${Date.now()}`, {
+        method: 'GET',
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
 
-        if (Array.isArray(data)) {
-          setMenuData(data);
-        } else {
-          console.error('La API no devolvió una lista:', data);
-          setMenuData([]);
-        }
-      } catch (error) {
-        console.error('Error cargando el menú:', error);
+      const data = await response.json();
+
+      if (Array.isArray(data)) {
+        setMenuData(data);
+      } else {
+        console.error('La API no devolvió una lista:', data);
         setMenuData([]);
-      } finally {
-        setLoading(false);
       }
+    } catch (error) {
+      console.error('Error cargando el menú:', error);
+      setMenuData([]);
+    } finally {
+      setLoading(false);
     }
+  }
 
+  useEffect(() => {
     loadMenu();
+
+    const interval = setInterval(() => {
+      loadMenu();
+    }, 10000);
+
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        loadMenu();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const filteredData = menuData
@@ -122,47 +168,24 @@ export default function Home() {
             <Brands />
 
             <div className={styles.categoriesGrid}>
-              {menuData.map((category, index) => {
-                const categoryImages = {
-                  "pizzas": "cat_pizzas_1777948745116.png",
-                  "empanadas": "cat_empanadas_1777948758530.png",
-                  "entradas": "cat_entradas_1777948773334.png",
-                  "nuestras-papas": "cat_papas_1777948787796.png",
-                  "tablas": "cat_tablas_1777948801638.png",
-                  "bruschettas": "cat_bruschettas_1777948816039.png",
-                  "platos-principales": "cat_platos_principales_1777948864878.png",
-                  "wok": "cat_wok_1777948880648.png",
-                  "postres": "cat_postres_1777948894562.png",
-                  "ensaladas": "cat_ensaladas_1777948908523.png",
-                  "pastas": "cat_pastas_1777948921839.png",
-                  "salsas": "cat_salsas_1777948935935.png",
-                  "menu-infantil": "cat_menu_infantil_1777949008511.png",
-                  "hamburguesas": "cat_hamburguesas_1777949023178.png",
-                  "bebidas": "cat_bebidas_1777949036877.png",
-                  "tragos": "cat_tragos_1777949052420.png",
-                  "cafeteria": "cat_cafeteria_1777987847830.png",
-                  "productos-sin-tacc": "cat_sin_tacc_1777987861994.png",
-                  "la-bodega-del-general": "cat_bodega_1777987876493.png"
-                };
-                return (
-                  <Link 
-                    href={`/category/${category.id}`} 
-                    key={category.id} 
-                    className={styles.categoryCard}
-                    data-icon={!categoryImages[category.id] ? (categoryIcons[category.id] || "🍽️") : ""}
-                    style={{ 
-                      animationDelay: `${index * 0.05}s`,
-                      backgroundImage: categoryImages[category.id] 
-                        ? `linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%), url('/images/${categoryImages[category.id]}')`
-                        : undefined,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }}
-                  >
-                    <h2 className={styles.categoryName}>{category.name}</h2>
-                  </Link>
-                );
-              })}
+              {menuData.map((category, index) => (
+                <Link
+                  href={`/category/${category.id}`}
+                  key={category.id}
+                  className={styles.categoryCard}
+                  data-icon={!categoryImages[category.id] ? (categoryIcons[category.id] || '🍽️') : ''}
+                  style={{
+                    animationDelay: `${index * 0.05}s`,
+                    backgroundImage: categoryImages[category.id]
+                      ? `linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%), url('/images/${categoryImages[category.id]}')`
+                      : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                >
+                  <h2 className={styles.categoryName}>{category.name}</h2>
+                </Link>
+              ))}
             </div>
 
             <div className={styles.storeImageContainer}>
