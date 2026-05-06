@@ -1,64 +1,54 @@
-.brandsContainer {
-  padding: 2rem 1rem;
+.container {
+  width: 100%;
   margin: 2rem 0;
+  padding: 0 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+
+  height: 110px;
+
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  gap: 2.5rem;
-  background-color: var(--bg-secondary);
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+
+  backdrop-filter: blur(8px);
+
+  transition: all 0.25s ease;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform var(--transition-speed) ease, filter var(--transition-speed) ease;
-  filter: grayscale(0%) brightness(100%); /* Normal color by default */
-  opacity: 0.9;
+.card:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.05);
 }
 
-.brand:hover {
-  transform: scale(1.05);
-  filter: grayscale(100%) brightness(150%); /* Grayscale on hover */
+.logo {
+  width: 120px;
+  max-height: 45px;
+
+  object-fit: contain;
+
+  filter: grayscale(100%) brightness(2);
+
+  opacity: 0.65;
+
+  transition: all 0.25s ease;
 }
 
-.stella .brandImage {
-  height: 45px;
-  border-radius: 4px;
-}
+.card:hover .logo {
+  opacity: 1;
 
-.brandImage {
-  height: 40px;
-  width: auto;
-  border-radius: 8px;
-}
-
-.corona .brandImage {
-  height: 35px;
-  border-radius: 0;
-  filter: brightness(0) invert(1); /* White for dark mode */
-}
-
-.patagonia {
-  font-family: var(--font-main);
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-}
-
-.patagonia .brandImage {
-  margin-bottom: 5px;
-}
-
-.pepsi .brandImage {
-  height: 40px;
-  border-radius: 0;
+  filter: grayscale(0%) brightness(1);
 }
